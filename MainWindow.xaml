@@ -1,0 +1,185 @@
+﻿<Window x:Class="DLA.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Diffusion Limited Aggregation" Height="725" Width="900" MinHeight="725" MinWidth="900" xmlns:CodeProject="clr-namespace:DLA"  Loaded="MapReset" SizeChanged="WindowSize_Changed">
+    <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="Beige"></SolidColorBrush>
+        </Grid.Background>
+        <DockPanel Name="dockPanelMain" Margin="20,20,5,5" LastChildFill="True">
+            <StackPanel Name="stackPanelLeft" DockPanel.Dock="Left" Width="200">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Width" Value="190" />
+                        <Setter Property="Margin" Value="0,1,0,1" />
+                    </Style>
+                    <Style TargetType="{x:Type Slider}">
+                        <Setter Property="Height" Value="30" />
+                        <Setter Property="Width" Value="175" />
+                    </Style>
+                    <Style TargetType="{x:Type RadioButton}">
+                        <Setter Property="Margin" Value="10,0,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+                <Grid Name="gridLeft" Width="200">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="640" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Canvas IsEnabled="True" Grid.Column="0" Grid.Row="0">
+                        <Rectangle Width="200" Height="640" RadiusX="10" RadiusY="10" Fill="White" Stroke="Silver" Opacity="0.5" />
+                        <StackPanel Width="200" Height="640" VerticalAlignment="Top">
+                            <Label Height="35" Width="94" FontSize="12" FontWeight="Bold">Options</Label>
+                            <Grid Name="gridInner1" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Name="startBtn" Grid.Column="0" Content="Start" Click="StartButton_Click"></Button>
+                            </Grid>
+                            <Grid Name="gridInner2" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Name="singleStepBtn" Grid.Column="0" Content="Single Step" Click="SingleStepButton_Click"></Button>
+                            </Grid>
+                            <Grid Name="gridInner3" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Step</Label>
+                                <Label Name="stepLabel" Grid.Column="1" Content=""></Label>
+                            </Grid>
+                            <Grid Name="gridInner4" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Speed</Label>
+                                <Label Name="speedLabel" Grid.Column="1" Content="{Binding Value, ElementName=speedSlider}"></Label>
+                            </Grid>
+                            <Slider Name="speedSlider" Minimum="1" Maximum="2000" SmallChange="10" LargeChange="50" Value="200" IsSnapToTickEnabled="True" />
+                            <Grid Name="gridInner5" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Particle density</Label>
+                                <Label Name="particleDensityLabel" Grid.Column="1" Content="{Binding Value, ElementName=particleDensitySlider}"></Label>
+                            </Grid>
+                            <Slider Name="particleDensitySlider" Minimum="1" Maximum="50" SmallChange="1" LargeChange="5" Value="15" IsSnapToTickEnabled="True" />
+                            <Grid Name="gridInner6" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Map size</Label>
+                                <Label Name="mapSizeLabel" Grid.Column="1" Content="{Binding Value, ElementName=mapSizeSlider}"></Label>
+                            </Grid>
+                            <Slider Name="mapSizeSlider" Minimum="100" Maximum="500" SmallChange="50" LargeChange="100" Value="100" IsSnapToTickEnabled="True" TickFrequency="100"/>
+                            <Grid Name="gridInner7" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Color 1</Label>
+                                <StackPanel Name="colorPanel1" Grid.Column="1" Width="20" Height="20" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                    <xctk:ColorPicker Name="colorPicker1" SelectedColor="Green" ShowAvailableColors="False" ShowDropDownButton="False" Width="20" Height="20" SelectedColorChanged="SelectedColor_Changed"></xctk:ColorPicker>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Name="gridInner8" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Color 2</Label>
+                                <StackPanel Name="colorPanel2" Grid.Column="1" Background="Blue" Width="20" Height="20" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                    <xctk:ColorPicker Name="colorPicker2" SelectedColor="Blue" ShowAvailableColors="False" ShowDropDownButton="False" Width="20" Height="20" SelectedColorChanged="SelectedColor_Changed"></xctk:ColorPicker>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Name="gridInner9" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Background color</Label>
+                                <StackPanel Name="colorPanel3" Grid.Column="1" Background="Black" Width="20" Height="20" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                    <xctk:ColorPicker Name="colorPicker3" SelectedColor="Black" ShowAvailableColors="False" ShowDropDownButton="False" Width="20" Height="20" SelectedColorChanged="SelectedColor_Changed"></xctk:ColorPicker>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Name="gridInner10" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0">Seed particles</Label>
+                                <Label Name="seedParticlesNumber" Grid.Column="1" Content=""></Label>
+                            </Grid>
+                            <Grid Name="gridInner11" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Name="resetBtn" Content="Reset" Margin="0, 30, 0, 0" Click="MapReset"></Button>
+                            </Grid>
+                            <Grid Name="gridInner12" Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label Name="treeSeedKindLabel" Grid.Row="0">Tree seed kind</Label>
+                                <RadioButton Name="PointSeed" Grid.Row="1" Click="RadioButton_Click" IsChecked="True">point</RadioButton>
+                                <RadioButton Name="LineSeed" Grid.Row="2" Click="RadioButton_Click">line</RadioButton>
+                                <RadioButton Name="CircleSeed" Grid.Row="3" Click="RadioButton_Click">circle</RadioButton>
+                            </Grid>
+                        </StackPanel>
+                    </Canvas>
+                </Grid>
+            </StackPanel>
+            <DockPanel Name="dockPanel2" DockPanel.Dock="Right" Margin="20,0,15,15" LastChildFill="True" >
+                <CodeProject:DLADrawingContext x:Name="drawingSurface" >
+                </CodeProject:DLADrawingContext>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>
